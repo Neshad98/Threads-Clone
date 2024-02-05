@@ -29,8 +29,16 @@ const postSchema = mongoose.Schema({
         required: true
       },
       userProfilePic: {
-
+        type: String,
+      },
+      username: {
+        type: String,
       }
     }
   ]
+}, {
+  timestamps: true,
 })
+
+const Post = mongoose.model("Post", postSchema);
+export default Post;
