@@ -1,7 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
-// import mongoose from "mongoose";
 
 const signupUser = async (req, res) => {
   try {
@@ -40,5 +39,26 @@ const signupUser = async (req, res) => {
     console.log("Error in signupUser: ", err.message);
   }
 }
+const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
-export { signupUser };
+    if (!user || !isPasswordCorrect) return res.status(400).json({ message: "Invalid userename or password" });
+    generateTokenAndSetCookie(user._id, res);
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      username: user.username,
+    })
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log("Error in loginUser: ", err.message);
+  }
+}
+
+
+export { signupUser, loginUser };
