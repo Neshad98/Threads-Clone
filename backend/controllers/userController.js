@@ -71,7 +71,12 @@ const logoutUser = async (req, res) => {
 }
 
 const followUnFollowUser = async (req, res) => {
-
+  try {
+    const { id } = req.params;
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log("Error in logoutUser: ", err.message);
+  }
 }
 
 
