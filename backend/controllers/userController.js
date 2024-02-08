@@ -60,5 +60,19 @@ const loginUser = async (req, res) => {
   }
 }
 
+const logoutUser = async (req, res) => {
+  try {
+    res.cookie("jwt", "", { maxAge: 1 });
+    res.status(200).json({ message: "User logged out successfully." })
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log("Error in logoutUser: ", err.message);
+  }
+}
 
-export { signupUser, loginUser };
+const followUnFollowUser = async (req, res) => {
+
+}
+
+
+export { signupUser, loginUser, logoutUser, followUnFollowUser };
