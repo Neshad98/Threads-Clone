@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.send('Hello server is running');
+});
 
 //Routes
 app.use("/api/users", userRoutes);

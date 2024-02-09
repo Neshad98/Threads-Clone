@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 
 const signupUser = async (req, res) => {
@@ -39,6 +40,7 @@ const signupUser = async (req, res) => {
     console.log("Error in signupUser: ", err.message);
   }
 }
+
 const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -85,15 +87,17 @@ const followUnFollowUser = async (req, res) => {
       //then unfollow user
       await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
       await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
+      res.status(200).json({ message: "User unfollowed successfully" });
     } else {
       //follow user
       await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
       await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
+      res.status(200).json({ message: "User followed successfully" });
     }
 
   } catch (err) {
     res.status(500).json({ message: err.message });
-    console.log("Error in logoutUser: ", err.message);
+    console.log("Error in followUnFollowUser: ", err.message);
   }
 }
 
