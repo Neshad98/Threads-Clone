@@ -4,6 +4,7 @@ import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 import userRoutes from "./routes/userRoutes.js"
+import postRoutes from "./routes/postRoutes.js"
 
 dotenv.config();
 connectDB();
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 //Routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 
 app.listen(PORT, () => console.log(`Server running at port ${PORT}`));
