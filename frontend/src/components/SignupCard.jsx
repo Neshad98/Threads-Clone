@@ -13,6 +13,7 @@ import {
   Text,
   useColorModeValue,
   Link,
+  useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
@@ -29,6 +30,7 @@ export default function SignupCard() {
     password: "",
   })
 
+  const toast = useToast();
   const handleSignup = async () => {
     console.log(inputs)
     try {
@@ -39,7 +41,16 @@ export default function SignupCard() {
         },
         body: JSON.stringify(inputs)
       })
-      const data = res.json();
+      const data = await res.json();
+      if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
       console.log(data);
     } catch (err) {
       console.log(err)
