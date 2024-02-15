@@ -10,7 +10,7 @@ const LogOutButton = () => {
   const handleLogout = async () => {
     try {
 
-      const res = fetch("/api/users/logout", {
+      const res = await fetch("/api/users/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,8 +24,8 @@ const LogOutButton = () => {
       }
       localStorage.removeItem('user-threads');
       setUser(null);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      showToast("Error", error.message, "error")
     }
   }
 
