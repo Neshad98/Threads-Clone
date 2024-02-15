@@ -10,13 +10,24 @@ import {
   Avatar,
   Center,
 } from '@chakra-ui/react'
+import { useState } from 'react'
+import { useRecoilState } from 'recoil'
+import userAtom from '../atoms/userAtom'
 
 
 export default function UpdateProfilePage() {
+  const [user, setUser] = useRecoilState(userAtom);
+  const [inputs, setInputs] = useState({
+    name: '',
+    username: '',
+    email: '',
+    bio: '',
+    password: '',
+  })
   return (
     <Flex
       align={'center'}
-      justify={'center'}
+      justify={'center'} my={6}
     >
       <Stack
         spacing={4}
@@ -26,7 +37,7 @@ export default function UpdateProfilePage() {
         rounded={'xl'}
         boxShadow={'lg'}
         p={6}
-        my={12}>
+      >
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
           User Profile Edit
         </Heading>
@@ -92,7 +103,7 @@ export default function UpdateProfilePage() {
             Cancel
           </Button>
           <Button
-            bg={'blue.400'}
+            bg={'green.400'}
             color={'white'}
             w="full"
             _hover={{
