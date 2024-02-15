@@ -50,7 +50,10 @@ export default function SignupCard() {
           duration: 3000,
           isClosable: true,
         });
+        return
       }
+      localStorage.setItem("user-threads", JSON.stringify(data));
+
       console.log(data);
     } catch (err) {
       console.log(err)
