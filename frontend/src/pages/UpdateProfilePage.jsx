@@ -32,7 +32,17 @@ export default function UpdateProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
+      const res = await fetch(`/api/users/update/${user._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
+      })
+      const data = await res.json();
+      if (data.error) {
+        showToast("Error", data.error, 'error');
+      }
     } catch (error) {
       showToast("Error", error, "error");
     }
@@ -68,7 +78,7 @@ export default function UpdateProfilePage() {
               </Center>
             </Stack>
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Full name</FormLabel>
             <Input
               value={inputs.name}
@@ -78,7 +88,7 @@ export default function UpdateProfilePage() {
               type="text"
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>User name</FormLabel>
             <Input
               value={inputs.username}
@@ -88,7 +98,7 @@ export default function UpdateProfilePage() {
               type="text"
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Email address</FormLabel>
             <Input
               value={inputs.email}
@@ -98,17 +108,17 @@ export default function UpdateProfilePage() {
               type="email"
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Bio</FormLabel>
             <Input
               value={inputs.bio}
               onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
               placeholder="your bio"
               _placeholder={{ color: 'gray.500' }}
-              type="email"
+              type="text"
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Password</FormLabel>
             <Input
               value={inputs.password}
@@ -134,7 +144,7 @@ export default function UpdateProfilePage() {
               w="full"
               _hover={{
                 bg: 'blue.500',
-              }}>
+              }} type='submit'>
               Submit
             </Button>
           </Stack>
