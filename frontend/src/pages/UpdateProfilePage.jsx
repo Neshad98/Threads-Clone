@@ -42,7 +42,11 @@ export default function UpdateProfilePage() {
       const data = await res.json();
       if (data.error) {
         showToast("Error", data.error, 'error');
+        return;
       }
+      showToast("Success", "Profile updated successfully", "success");
+      setUser(data);
+      localStorage.setItem("user-threads", JSON.stringify(data));
     } catch (error) {
       showToast("Error", error, "error");
     }

@@ -150,6 +150,10 @@ const updateUser = async (req, res) => {
     user.bio = bio || user.bio;
 
     user = await user.save();
+
+    //password should be null in response
+    user.password = null;
+
     res.status(200).json(user);
 
   } catch (err) {
