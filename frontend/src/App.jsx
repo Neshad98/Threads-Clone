@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil"
 import userAtom from "./atoms/userAtom"
 import LogOutButton from "./components/LogOutButton"
 import UpdateProfilePage from "./pages/UpdateProfilePage"
+import CreatePost from "./components/CreatePost"
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
       </Routes>
 
       {user && <LogOutButton />}
+      {user && <CreatePost />}
 
     </Container>
   )
