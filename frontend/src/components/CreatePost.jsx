@@ -1,21 +1,31 @@
 import { AddIcon } from "@chakra-ui/icons"
-import { Button, FormControl, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorModeValue, useDisclosure } from "@chakra-ui/react"
+import { Button, CloseButton, Flex, FormControl, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useColorModeValue, useDisclosure } from "@chakra-ui/react"
 import { useRef, useState } from "react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { BsFillImageFill } from "react-icons/bs";
+
+const MAX_CHAR = 500;
 
 
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [postText, setPostText] = useState('');
-  const { handleImageChange, imgUrl } = usePreviewImg();
+  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
   const imageRef = useRef(null);
-  const handleTextChange = () => {
+  const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
+  const handleTextChange = (e) => {
+    const inputText = e.target.value;
+    if (inputText.length > MAX_CHAR) {
+
+    }
+  }
+
+  const handleCreatePost = async () => {
 
   }
-  const handleImageChange = () => {
+  // const handleImageChange = () => {
 
-  }
+  // }
   return (
     <>
       <Button
@@ -55,11 +65,21 @@ const CreatePost = () => {
                 onClick={() => imageRef.current.click()}
               />
             </FormControl>
+
+            {imgUrl && (
+              <Flex mt={5} w={"full"} position={"relative"}>
+                <Image src={imgUrl} />
+                <CloseButton onClick={() => { setImgUrl("") }} bg={"gray.800"}
+                  position={"absolute"} top={2} right={2}
+                />
+              </Flex>
+            )}
+
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
+            <Button colorScheme='blue' mr={3} onClick={handleCreatePost}>
+              Post
             </Button>
           </ModalFooter>
         </ModalContent>
