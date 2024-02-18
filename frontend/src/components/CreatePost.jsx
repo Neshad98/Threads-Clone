@@ -48,7 +48,9 @@ const CreatePost = () => {
         return;
       }
       showToast("Success", "Post created successfully", "success")
-      onclose();
+      onClose();
+      setPostText("");
+      setImgUrl("");
     } catch (error) {
       showToast("Error", error, "error");
     } finally {
