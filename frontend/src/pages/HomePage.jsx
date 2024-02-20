@@ -1,7 +1,8 @@
-import { Button, Flex, Spinner } from "@chakra-ui/react"
+import { Flex, Spinner } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+
 import useShowToast from "../hooks/useShowToast"
+import Post from "../components/Post.jsx";
 
 
 const HomePage = () => {
@@ -37,6 +38,10 @@ const HomePage = () => {
           <Spinner size="xl" />
         </Flex>
       )}
+
+      {posts.map((post) => (
+        <Post key={post._id} post={post} postedBy={post.postedBy} />
+      ))}
 
     </>
   )
