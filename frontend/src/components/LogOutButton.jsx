@@ -3,6 +3,7 @@ import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import { FiLogOut } from "react-icons/fi";
+import { Navigate } from "react-router-dom";
 
 
 const LogOutButton = () => {
@@ -16,9 +17,9 @@ const LogOutButton = () => {
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      });
       const data = await res.json();
-      console.log(data);
+
       if (data.error) {
         showToast("Error", data.error, "error")
         return;
@@ -27,7 +28,11 @@ const LogOutButton = () => {
       setUser(null);
     } catch (error) {
       showToast("Error", error.message, "error")
+    } finally {
+      <Navigate to={"/auth"} />
     }
+
+
   }
 
   return (
