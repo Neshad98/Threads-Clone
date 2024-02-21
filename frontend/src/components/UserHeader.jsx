@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Link, Menu, MenuButton, MenuItem, MenuList, Portal, Text, VStack, useToast } from "@chakra-ui/react"
+import { Avatar, Box, Button, Flex, Link, Menu, MenuButton, MenuItem, MenuList, Portal, Text, VStack, useToast, useColorModeValue } from "@chakra-ui/react"
 import { BsInstagram } from 'react-icons/bs';
 import { CgMoreO } from 'react-icons/cg';
 import { useRecoilValue } from "recoil";
@@ -113,7 +113,7 @@ const UserHeader = ({ user }) => {
         </Flex>
         <Flex>
           <Box className="icon-container">
-            <BsInstagram size={24} cursor={"pointer"} />
+            <BsInstagram size={24} cursor={"pointer"} bg={useColorModeValue("gray.300", "gray.dark")} />
           </Box>
           <Box className="icon-container">
             <Menu>
@@ -121,8 +121,8 @@ const UserHeader = ({ user }) => {
                 <CgMoreO size={24} cursor={"pointer"} />
               </MenuButton>
               <Portal>
-                <MenuList bg={"gray.dark"}>
-                  <MenuItem bg={"gray.dark"} onClick={copyURL}>Copy link</MenuItem>
+                <MenuList bg={useColorModeValue("gray.300", "gray.dark")}>
+                  <MenuItem bg={useColorModeValue("gray.300", "gray.dark")} onClick={copyURL}>Copy link</MenuItem>
                 </MenuList>
               </Portal>
             </Menu>

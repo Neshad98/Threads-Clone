@@ -1,15 +1,15 @@
 import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react"
-import { BsThreeDots } from "react-icons/bs"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Actions from "./Actions"
 import { useEffect, useState } from "react"
 import useShowToast from "../hooks/useShowToast"
-
+import { formatDistanceToNow } from "date-fns";
 
 const Post = ({ post, postedBy }) => {
   const [liked, setLiked] = useState(false);
   const [user, setUser] = useState(null);
   const showToast = useShowToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -35,10 +35,15 @@ const Post = ({ post, postedBy }) => {
 
 
   return (
-    <Link to={"markzuckerberg/post/1"}>
+    <Link to={`/${user?.username}/post/${post._id}`}>
       <Flex gap={3} mb={4} py={5}>
         <Flex flexDir={"column"} alignItems={"center"}>
-          <Avatar size={"md"} name={user?.name} src={user?.profilePic} />
+          <Avatar size={"md"} name={user?.name} src={user?.profilePic}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`/${user.username}`)
+            }}
+          />
           <Box w={"1px"} h={"full"} bg="gray.light" my={2}></Box>
           <Box position={"relative"} w={"full"}>
             {post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
@@ -63,12 +68,18 @@ const Post = ({ post, postedBy }) => {
         <Flex flex={1} flexDir={"column"} gap={2}>
           <Flex justifyContent={"space-between"} w={"full"}>
             <Flex w={"full"} alignItems={"center"}>
-              <Text fontSize={"small"} fontWeight={"bold"}>{user?.username}</Text>
+              <Text fontSize={"small"} fontWeight={"bold"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/${user?.username}`)
+                }}
+              >{user?.username}</Text>
               <Image src="/verified.png" w={4} h={4} ml={1} />
             </Flex>
             <Flex gap={4} alignItems={"center"}>
-              <Text fontSize={"small"} color={"gray.light"}>1d</Text>
-              <BsThreeDots />
+              <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
+                {formatDistanceToNow(new Date(post.createdAt))} ago
+              </Text>
             </Flex>
           </Flex>
           <Text fontSize={"small"}>{post.text}</Text>
