@@ -50,7 +50,7 @@ const UserHeader = ({ user }) => {
         user.followers.pop(); //simulate removing from followers
       } else {
         showToast("Success", `Followed ${user.name}`, "success");
-        user.followers.push(currentUser._id); //simulate adiing to followers only to client side
+        user.followers.push(currentUser?._id); //simulate adiing to followers only to client side
       }
       setFollowing(!following);
       console.log(data);

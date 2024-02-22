@@ -4,6 +4,7 @@ import Actions from "./Actions"
 import { useEffect, useState } from "react"
 import useShowToast from "../hooks/useShowToast"
 import { formatDistanceToNow } from "date-fns";
+import { DeleteIcon } from "@chakra-ui/icons"
 
 const Post = ({ post, postedBy }) => {
   const [user, setUser] = useState(null);
@@ -78,6 +79,7 @@ const Post = ({ post, postedBy }) => {
               <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
                 {formatDistanceToNow(new Date(post.createdAt))} ago
               </Text>
+              <DeleteIcon size={20} />
             </Flex>
           </Flex>
           <Text fontSize={"small"}>{post.text}</Text>
