@@ -17,13 +17,20 @@ const PostPage = () => {
   useEffect(() => {
     const getPost = async () => {
       try {
-
+        const res = await fetch(`/api/posts/${pid}`);
+        const data = res.json();
+        if (data.error) {
+          showToast("Error", data.error, "error");
+          return;
+        }
+        console.log(data);
+        setPosts(data);
       } catch (error) {
         showToast("Error", error.message, "error")
       }
     }
     getPost();
-  }, [])
+  }, [showToast, pid])
 
   if (!user && loading) {
     return (
@@ -32,6 +39,7 @@ const PostPage = () => {
       </Flex>
     )
   }
+  if (!post) return null;
 
   return <>
     <Flex>
@@ -48,7 +56,7 @@ const PostPage = () => {
       </Flex>
     </Flex>
 
-    <Text my={3}>Let&apos;s talk about Threads.</Text>
+    <Text my={3}>{post.text}</Text>
     <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
       <Image src={"/post1.png"} w={"full"} />
     </Box>
