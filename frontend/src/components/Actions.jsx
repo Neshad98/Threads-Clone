@@ -23,7 +23,7 @@ import postsAtom from "../atoms/postsAtom.js";
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
   const [liked, setLiked] = useState(post?.likes?.includes(user?._id));
-  // const [posts, setPosts] = useRecoilState(postsAtom);
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLiking, setIsLiking] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [reply, setReply] = useState("");
@@ -36,33 +36,35 @@ const Actions = ({ post }) => {
     if (isLiking) return;
     setIsLiking(true);
     try {
-      const res = await fetch("/api/posts/like/" + post._id, {
+      console.log(post._id);
+      const res = await fetch(`/api/posts/like/` + post._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const data = await res.json();
+      console.log(data);
       if (data.error) return showToast("Error", data.error, "error");
 
       if (!liked) {
         // add the id of the current user to post.likes array
-        // const updatedPosts = posts.map((p) => {
-        //   if (p._id === post._id) {
-        //     return { ...p, likes: [...p.likes, user._id] };
-        //   }
-        //   return p;
-        // });
-        // setPosts(updatedPosts);
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: [...p.likes, user._id] };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
       } else {
         // remove the id of the current user from post.likes array
-        // const updatedPosts = posts.map((p) => {
-        //   if (p._id === post._id) {
-        //     return { ...p, likes: p.likes.filter((id) => id !== user._id) };
-        //   }
-        //   return p;
-        // });
-        // setPosts(updatedPosts);
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: p.likes.filter((id) => id !== user._id) };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
       }
 
       setLiked(!liked);

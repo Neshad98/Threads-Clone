@@ -6,6 +6,10 @@ import Comment from "../components/Comment"
 import useGetUserProfile from "../hooks/useGetUserProfile"
 import useShowToast from "../hooks/useShowToast"
 import { useParams } from "react-router-dom"
+import { formatDistanceToNow } from "date-fns"
+import { useRecoilValue } from "recoil"
+import userAtom from "../atoms/userAtom"
+import { DeleteIcon } from "@chakra-ui/icons"
 
 
 const PostPage = () => {
@@ -13,6 +17,7 @@ const PostPage = () => {
   const [post, setPosts] = useState(null);
   const showToast = useShowToast();
   const { pid } = useParams();
+  const currentUser = useRecoilValue(userAtom);
 
   useEffect(() => {
     const getPost = async () => {
@@ -31,6 +36,10 @@ const PostPage = () => {
     }
     getPost();
   }, [showToast, pid])
+
+  const handleDeletePost = async (e) => {
+
+  }
 
   if (!user && loading) {
     return (
@@ -51,27 +60,34 @@ const PostPage = () => {
         </Flex>
       </Flex>
       <Flex gap={4} alignItems={"center"}>
-        <Text fontSize={"small"} color={"gray.light"}>1d</Text>
-        <BsThreeDots />
+        <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
+          {/* it's giving error fckn formatDistanceToNow....  */}
+          {/* {formatDistanceToNow(new Date(post?.createdAt))} ago */}
+        </Text>
+        {currentUser?._id === user?._id && (
+          <DeleteIcon size={20} onClick={handleDeletePost} />
+        )}
       </Flex>
     </Flex>
 
     <Text my={3}>{post.text}</Text>
-    <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-      <Image src={"/post1.png"} w={"full"} />
-    </Box>
+    {post.img && (
+      <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
+        <Image src={post?.img} w={"full"} />
+      </Box>
+    )}
 
     <Flex gap={3} my={3}>
       <Actions post={post} />
     </Flex>
 
-    <Flex gap={2} alignItems={"center"}>
-      <Text color={"gray.light"} fontSize={"small"}>238 replies</Text>
+    {/* <Flex gap={2} alignItems={"center"}>
+      <Text color={"gray.light"} fontSize={"small"}>{post?.replies.length} replies</Text>
       <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
       <Text color={"gray.light"} fontSize={"small"}>
-        {200} likes
+        {post?.likes.length} likes
       </Text>
-    </Flex>
+    </Flex> */}
     <Divider my={4} />
 
     <Flex justifyContent={"space-between"}>
