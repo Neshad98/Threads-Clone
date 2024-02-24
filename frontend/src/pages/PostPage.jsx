@@ -23,7 +23,7 @@ const PostPage = () => {
     const getPost = async () => {
       try {
         const res = await fetch(`/api/posts/${pid}`);
-        const data = res.json();
+        const data = await res.json();
         if (data.error) {
           showToast("Error", data.error, "error");
           return;
@@ -60,10 +60,12 @@ const PostPage = () => {
         </Flex>
       </Flex>
       <Flex gap={4} alignItems={"center"}>
-        <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
-          {/* it's giving error fckn formatDistanceToNow....  */}
-          {/* {formatDistanceToNow(new Date(post?.createdAt))} ago */}
-        </Text>
+        {post?.createdAt && (
+          <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
+            {/* it's giving error fckn formatDistanceToNow....  */}
+            {formatDistanceToNow(new Date(post?.createdAt))} ago
+          </Text>
+        )}
         {currentUser?._id === user?._id && (
           <DeleteIcon size={20} onClick={handleDeletePost} />
         )}
@@ -81,13 +83,6 @@ const PostPage = () => {
       <Actions post={post} />
     </Flex>
 
-    {/* <Flex gap={2} alignItems={"center"}>
-      <Text color={"gray.light"} fontSize={"small"}>{post?.replies.length} replies</Text>
-      <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
-      <Text color={"gray.light"} fontSize={"small"}>
-        {post?.likes.length} likes
-      </Text>
-    </Flex> */}
     <Divider my={4} />
 
     <Flex justifyContent={"space-between"}>

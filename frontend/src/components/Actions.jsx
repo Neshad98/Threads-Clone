@@ -17,8 +17,8 @@ import {
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import useShowToast from "../hooks/useShowToast.js";
-import postsAtom from "../atoms/postsAtom.js";
+import useShowToast from "../hooks/useShowToast";
+import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
@@ -36,15 +36,18 @@ const Actions = ({ post }) => {
     if (isLiking) return;
     setIsLiking(true);
     try {
-      console.log(post._id);
-      const res = await fetch(`/api/posts/like/` + post._id, {
+      if (!post || !post?._id) {
+        console.error("Post or post._id is undefined");
+        showToast("Error", "Post ID is undefined", "error");
+        return;
+      }
+      const res = await fetch("/api/posts/like/" + post?._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const data = await res.json();
-      console.log(data);
       if (data.error) return showToast("Error", data.error, "error");
 
       if (!liked) {
@@ -90,13 +93,13 @@ const Actions = ({ post }) => {
       const data = await res.json();
       if (data.error) return showToast("Error", data.error, "error");
 
-      // const updatedPosts = posts.map((p) => {
-      //   if (p._id === post._id) {
-      //     return { ...p, replies: [...p.replies, data] };
-      //   }
-      //   return p;
-      // });
-      // setPosts(updatedPosts);
+      const updatedPosts = posts.map((p) => {
+        if (p._id === post._id) {
+          return { ...p, replies: [...p.replies, data] };
+        }
+        return p;
+      });
+      setPosts(updatedPosts);
       showToast("Success", "Reply posted successfully", "success");
       onClose();
       setReply("");
