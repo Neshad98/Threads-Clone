@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import Comment from "../components/Comment"
 import useGetUserProfile from "../hooks/useGetUserProfile"
 import useShowToast from "../hooks/useShowToast"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { formatDistanceToNow } from "date-fns"
 import { useRecoilValue } from "recoil"
 import userAtom from "../atoms/userAtom"
@@ -18,6 +18,7 @@ const PostPage = () => {
   const showToast = useShowToast();
   const { pid } = useParams();
   const currentUser = useRecoilValue(userAtom);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPost = async () => {
@@ -37,8 +38,23 @@ const PostPage = () => {
     getPost();
   }, [showToast, pid])
 
-  const handleDeletePost = async (e) => {
+  const handleDeletePost = async () => {
+    try {
+      if (!window.confirm("Are you sure you want to delete this post?")) return;
 
+      const res = await fetch(`/api/posts/${post._id}`, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+      showToast("Success", "Post deleted", "success")
+      navigate(`/${user?.username}`);
+    } catch (error) {
+      showToast("Error", error.message, "error")
+    }
   }
 
   if (!user && loading) {
@@ -67,7 +83,7 @@ const PostPage = () => {
           </Text>
         )}
         {currentUser?._id === user?._id && (
-          <DeleteIcon size={20} onClick={handleDeletePost} />
+          <DeleteIcon size={20} cursor={"pointer"} onClick={handleDeletePost} />
         )}
       </Flex>
     </Flex>
@@ -96,9 +112,13 @@ const PostPage = () => {
     </Flex>
 
     <Divider my={4} />
-    {/* <Comment
-      comment="Looks really good!" createdAt="2d" likes={100} username="John doe"
-      userAvatar="https://bit.ly/dan-abramov" /> */}
+    {post?.replies.map(reply => (
+      <Comment
+        key={reply._id}
+        reply={reply}
+      />
+    ))}
+
 
 
   </>
