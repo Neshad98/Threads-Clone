@@ -2,7 +2,7 @@ import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
 
 
 
-const Comment = ({ reply }) => {
+const Comment = ({ reply, lastReply }) => {
 
   return (
     <>
@@ -16,7 +16,7 @@ const Comment = ({ reply }) => {
           <Text>{reply.text}</Text>
         </Flex>
       </Flex>
-      <Divider></Divider>
+      {!lastReply ? <Divider /> : null}
     </>
   )
 }
