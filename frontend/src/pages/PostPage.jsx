@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text } from "@chakra-ui/react"
 import { BsThreeDots } from "react-icons/bs"
 import Actions from "../components/Actions"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Comment from "../components/Comment"
 import useGetUserProfile from "../hooks/useGetUserProfile"
 import useShowToast from "../hooks/useShowToast"
@@ -24,6 +24,7 @@ const PostPage = () => {
 
   useEffect(() => {
     const getPost = async () => {
+      setPosts([]);
       try {
         const res = await fetch(`/api/posts/${pid}`);
         const data = await res.json();
